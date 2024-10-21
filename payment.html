@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="payment.css"> <!-- Link to the CSS file -->
+</head>
+<body>
+    <main class="container mx-auto mt-10">
+        <div class="text-center mb-10">
+            <i class="fas fa-shopping-cart text-4xl text-gray-600"></i>
+            <h1 class="text-2xl font-semibold mt-2 main-title">Thanh toán</h1>
+            <p class="text-gray-600">Vui lòng kiểm tra thông tin Khách hàng, thông tin Giỏ hàng trước khi Đặt hàng.</p>
+        </div>
+        <div class="flex justify-between">
+            <form id="payment-form" class="w-1/2 bg-white p-6 rounded shadow">
+                <h2 class="text-xl font-semibold mb-4 section-title">Thông tin khách hàng</h2>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Họ tên</label>
+                    <input class="w-full px-3 py-2 border rounded input-field" required type="text" placeholder=""/>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Giới tính</label>
+                    <div class="flex items-center">
+                        <label class="mr-4">
+                            <input class="mr-2" name="gender" type="radio" value="Nam" required/> Nam
+                        </label>
+                        <label>
+                            <input class="mr-2" name="gender" type="radio" value="Nữ" required/> Nữ
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Địa chỉ</label>
+                    <input class="w-full px-3 py-2 border rounded input-field" required type="text" placeholder=""/>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Điện thoại</label>
+                    <input id="phone-input" class="w-full px-3 py-2 border rounded input-field" required pattern="\d{10}" title="Số điện thoại phải gồm 10 chữ số" type="text" placeholder="..."/>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Email</label>
+                    <input id="email-input" class="w-full px-3 py-2 border rounded input-field" required type="email" placeholder="Nhập email"/>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">CMND</label>
+                    <input id="cccd-input" class="w-full px-3 py-2 border rounded input-field" required pattern="\d{12}" title="CCCD phải gồm 12 chữ số" type="text" placeholder="..."/>
+                </div>
+                <h2 class="text-xl font-semibold mb-4 section-title">Hình thức thanh toán</h2>
+                <div class="mb-4">
+                    <label class="block text-gray-700">
+                        <input class="mr-2" name="payment" type="radio" required/> Tiền mặt
+                    </label>
+                    <label class="block text-gray-700">
+                        <input class="mr-2" name="payment" type="radio" required/> Chuyển khoản
+                    </label>
+                    <label class="block text-gray-700">
+                        <input class="mr-2" name="payment" type="radio" required/> Ship COD
+                    </label>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded">Đặt hàng</button>
+            </form>
+            <div class="w-1/3 bg-white p-6 rounded shadow">
+                <h2 class="text-xl font-semibold mb-4 section-title">Giỏ hàng</h2>
+                <div class="mb-4">
+                    <div class="flex justify-between">
+                        <span>Samsung Galaxy S3</span>
+                        <span>24,000,000 VND</span>
+                    </div>
+                    <div class="text-gray-500 text-sm">12,000,000.00 x 2</div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex justify-between">
+                        <span>Apple iPhone 5 16GB</span>
+                        <span>74,450,000 VND</span>
+                    </div>
+                    <div class="text-gray-500 text-sm">14,890,000.00 x 5</div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex justify-between">
+                        <span>Samsung Galaxy Tab 10.1 3G 16G</span>
+                        <span>32,970,000 VND</span>
+                    </div>
+                    <div class="text-gray-500 text-sm">10,990,000.00 x 3</div>
+                </div>
+                <div class="flex justify-between font-semibold">
+                    <span>Tổng thành tiền</span>
+                    <span>131,420,000 VND</span>
+                </div>
+                <div class="mt-4">
+                    <input class="w-2/3 px-3 py-2 border rounded input-field" placeholder="Mã khuyến mãi" type="text"/>
+                    <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("payment-form");
+            form.addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                // Retrieve inputs
+                const phoneInput = document.getElementById("phone-input");
+                const cccdInput = document.getElementById("cccd-input");
+                const emailInput = document.getElementById("email-input");
+                const genderInput = document.querySelector("input[name='gender']:checked");
+                const messages = [];
+
+                // Validate phone number
+                if (!/^\d{10}$/.test(phoneInput.value)) {
+                    messages.push("Số điện thoại phải gồm 10 chữ số.");
+                }
+
+                // Validate CCCD
+                if (!/^\d{12}$/.test(cccdInput.value)) {
+                    messages.push("CCCD phải gồm 12 chữ số.");
+                }
+
+                // Validate email for @gmail.com
+                if (!emailInput.value.endsWith('@gmail.com')) {
+                    messages.push("Email phải có định dạng @gmail.com.");
+                }
+
+                // Validate gender
+                if (!genderInput) {
+                    messages.push("Vui lòng chọn giới tính.");
+                }
+
+                // Check if all required fields are filled
+                if (!phoneInput.value || !cccdInput.value || !genderInput || !document.querySelector("input[name='payment']:checked")) {
+                    messages.push("Vui lòng nhập đầy đủ thông tin bắt buộc.");
+                }
+
+                // Show error messages if there are any
+                if (messages.length > 0) {
+                    alert(messages.join("\n")); // Display all error messages
+                } else {
+                    // If validation passes, show success message
+                    alert("Thanh toán thành công!");
+
+                    // Reset the form after 5 seconds
+                    setTimeout(() => {
+                        form.reset(); // Reset the form
+                        // Optionally, you can redirect or hide the form
+                    }, 5000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
